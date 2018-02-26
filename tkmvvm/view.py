@@ -4,9 +4,6 @@ import tkinter.ttk
 import viewmodel
 import mvvm
 
-_widgets = {
-}
-
 
 class View(abc.ABC):
     context = None
@@ -38,7 +35,7 @@ class View(abc.ABC):
         """
 
         if property_name not in self.properties:
-            raise ValueError('Property not found: {}'.format(property_name))
+            raise ValueError('Property not found: {}. Did you forget to bind it?'.format(property_name))
 
         for widget in self.properties[property_name]:
 
@@ -53,7 +50,6 @@ class View(abc.ABC):
                     widget.select()
                 else:
                     widget.deselect()
-
             elif isinstance(widget, tkinter.ttk.Checkbutton):
                 # check/uncheck the check button
                 widget.invoke()
@@ -122,6 +118,16 @@ class View(abc.ABC):
             widget.config(text=str(val))
 
         if isinstance(widget, tkinter.Listbox):
+            # bind selection to store currently selected in the viewmodel
+            widget.bind(
+                "<<ListboxSelect>>",
+                lambda event: setattr(
+                    self.context,
+                    'current_selection',
+                    event.widget.curselection()
+                )
+            )
+
             # add all items to listbox
             widget.delete(0, tkinter.END)
             for i, item in enumerate(getattr(self.context, property_name)):
