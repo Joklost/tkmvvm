@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://www.w3schools.com"
+           xmlns="https://www.w3schools.com"
+           elementFormDefault="qualified">
+
+    <!-- Reference Manual: http://infohost.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf -->
+
+    <!-- Root Element -->
+    <xs:element name="Window">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- /Root Element -->
+
+
+    <!-- Complex Types -->
+    <xs:complexType name="widget">
+        <xs:attribute name="anchor" type="anchor"/>
+        <xs:attribute name="relief" type="relief"/>
+        <xs:attribute name="bitmap" type="bitmap"/>
+        <xs:attribute name="cursor" type="cursor"/>
+        <!-- @TODO: Images, Section 5.9 -->
+
+        <xs:attribute name="grid-column" type="xs:int"/>
+        <xs:attribute name="grid-row" type="xs:int"/>
+        <xs:attribute name="grid-columnspan" type="xs:int"/>
+        <xs:attribute name="grid-rowspan" type="xs:int"/>
+        <xs:attribute name="grid-sticky" type="grid-sticky"/>
+        <xs:attribute name="grid-ipadx" type="xs:int"/>
+        <xs:attribute name="grid-ipady" type="xs:int"/>
+        <xs:attribute name="grid-padx" type="xs:int"/>
+        <xs:attribute name="grid-pady" type="xs:int"/>
+
+    </xs:complexType>
+
+    <xs:complexType name="button">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="command" type="command"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="entry">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="binding" type="binding"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="Frame">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Button" type="button" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="Entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <!-- /Complex Types -->
+
+
+    <!-- Simple Types -->
+    <xs:simpleType name="command">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{[A-Za-z_]+\}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cursor">
+        <xs:restriction base="xs:string">
+            <!-- @TODO: add options from Section 5.8 -->
+            <xs:enumeration value="arrow"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="binding">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{\{[A-Za-z_]+\}\}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="grid-sticky">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="sw"/>
+            <xs:enumeration value="e"/>
+            <xs:enumeration value="ne"/>
+            <xs:enumeration value="new"/>
+            <xs:enumeration value="es"/>
+            <xs:enumeration value="esw"/>
+            <xs:enumeration value="w"/>
+            <xs:enumeration value="nw"/>
+            <xs:enumeration value="n"/>
+            <xs:enumeration value="nes"/>
+            <xs:enumeration value="ew"/>
+            <xs:enumeration value="s"/>
+            <xs:enumeration value="ns"/>
+            <xs:enumeration value="nsw"/>
+            <xs:enumeration value="nesw"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="relief">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="flat"/>
+            <xs:enumeration value="raised"/>
+            <xs:enumeration value="sunken"/>
+            <xs:enumeration value="groove"/>
+            <xs:enumeration value="ridge"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="anchor">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="nw"/>
+            <xs:enumeration value="n"/>
+            <xs:enumeration value="ne"/>
+            <xs:enumeration value="e"/>
+            <xs:enumeration value="se"/>
+            <xs:enumeration value="s"/>
+            <xs:enumeration value="sw"/>
+            <xs:enumeration value="w"/>
+            <xs:enumeration value="center"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bitmap">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="gray75"/>
+            <xs:enumeration value="gray50"/>
+            <xs:enumeration value="gray25"/>
+            <xs:enumeration value="gray12"/>
+            <xs:enumeration value="hourglass"/>
+            <xs:enumeration value="info"/>
+            <xs:enumeration value="questhead"/>
+            <xs:enumeration value="question"/>
+            <xs:enumeration value="warning"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
+
