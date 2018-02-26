@@ -39,7 +39,6 @@ class TestViewModel(tkmvvm.viewmodel.ViewModel):
 
     @toggle.setter
     def toggle(self, value):
-        print('pis')
         self.model.toggle = value
         self.on_property_changed('toggle')
 
