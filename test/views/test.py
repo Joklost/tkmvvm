@@ -100,3 +100,9 @@ class TestView(tkmvvm.view.View):
         self.checkerbutton_lbl = tkinter.ttk.Label(self.window)
         self.bind_data(self.checkerbutton_lbl, 'toggle')
         self.checkerbutton_lbl.grid(row=7, column=2, columnspan=1, sticky=STICKY)
+
+    def mainloop(self):
+        self.parent.mainloop()
+
+    def resizeable(self, width: bool, height: bool):
+        self.parent.resizable(width, height)

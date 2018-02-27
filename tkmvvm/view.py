@@ -26,7 +26,9 @@ class View(abc.ABC):
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
 
-        window.geometry(f'{window_width}x{window_height}+{x}+{y}')
+        window.geometry('{window_width}x{window_height}+{x}+{y}'.format(
+            window_width=window_width, window_height=window_height, x=x, y=y
+        ))
 
     def property_changed(self, property_name: str):
         """

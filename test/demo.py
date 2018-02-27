@@ -10,11 +10,11 @@ def main():
     model = models.test.TestModel()
     vm = viewmodels.test.TestViewModel(model)
     root = tkinter.Tk()
-    view = views.test.TestView(root, vm)
-    root.resizable(False, False)
     root.withdraw()
 
-    root.mainloop()
+    view = views.test.TestView(root, vm)
+    view.resizeable(False, False)
+    view.mainloop()
 
 
 if __name__ == '__main__':
