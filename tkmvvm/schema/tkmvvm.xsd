@@ -4,6 +4,7 @@
            xmlns="https://jonaskloster.dk/xml/tkmvvm"
            elementFormDefault="qualified">
 
+    <xs:include schemaLocation="https://jonaskloster.dk/xml/include/simpletypes.xsd"/>
     <!-- Reference Manual: http://infohost.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf -->
 
     <!-- Root Element -->
@@ -13,7 +14,7 @@
                 <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
             </xs:choice>
-            <xs:attribute name="geometry" type="geometry"/>
+            <!--<xs:attribute name="geometry" type="geometry"/>-->
             <xs:attribute name="width" type="xs:int"/>
             <xs:attribute name="height" type="xs:int"/>
             <xs:attribute name="title" type="xs:string"/>
@@ -35,7 +36,23 @@
     <xs:element name="Separator"/>
     <xs:element name="Cascade"/>
     <xs:element name="Radiobutton"/>
+    <xs:element name="Message" type="message"/>
+    <xs:element name="PanedWindow" type="paned-window"/>
+    <xs:element name="PanedWindowChild" type="paned-window-child"/>
 
+    <xs:group name="widgets">
+        <xs:choice>
+            <!-- ref elements -->
+            <xs:element ref="Button" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Checkbutton" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Entry" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Label" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Listbox" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Menu" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:group>
     <!-- /Elements -->
 
     <!-- Complex Types -->
@@ -45,12 +62,12 @@
         <!-- @TODO: Cap and join styles, Section 5.12 -->
         <!-- @TODO: Dash patterns, Section 5.13 -->
         <!-- @TODO: Matching stipple patterns, Section 5.14 -->
-
+        <xs:attribute name="reference" type="xs:string"/>
         <xs:attribute name="grid-column" type="xs:int"/>
         <xs:attribute name="grid-row" type="xs:int"/>
         <xs:attribute name="grid-columnspan" type="xs:int"/>
         <xs:attribute name="grid-rowspan" type="xs:int"/>
-        <xs:attribute name="grid-sticky" type="grid-sticky"/>
+        <xs:attribute name="grid-sticky" type="sticky"/>
         <xs:attribute name="grid-ipadx" type="dimension"/>
         <xs:attribute name="grid-ipady" type="dimension"/>
         <xs:attribute name="grid-padx" type="dimension"/>
@@ -221,17 +238,8 @@
     <xs:complexType name="frame">
         <xs:complexContent>
             <xs:extension base="widget">
-                <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <!-- ref elements -->
-                    <xs:element ref="Button" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Checkbutton" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Entry" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Label" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Listbox" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="Menu" minOccurs="0" maxOccurs="unbounded"/>
-                </xs:choice>
+                <xs:group ref="widgets" minOccurs="0" maxOccurs="unbounded"/>
+
                 <xs:attribute name="background" type="color"/>
                 <xs:attribute name="borderwidth" type="dimension" default="0"/>
                 <xs:attribute name="cursor" type="cursor"/>
@@ -257,7 +265,6 @@
                 <xs:attribute name="text" type="xs:string"/>
                 <xs:attribute name="text-binding" type="binding"/>
             </xs:extension>
-
         </xs:complexContent>
 
     </xs:complexType>
@@ -349,7 +356,6 @@
                 <xs:attribute name="highlightthickness" type="xs:int"/>
                 <xs:attribute name="image" type="image"/>
                 <xs:attribute name="justify" type="justify"/>
-                <!-- menu -->
                 <xs:attribute name="padx" type="xs:int"/>
                 <xs:attribute name="pady" type="xs:int"/>
                 <xs:attribute name="relief" type="relief" default="raised"/>
@@ -362,220 +368,77 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+    <xs:complexType name="message">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="aspect" type="xs:int"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension" default="2p"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="font" type="font"/>
+                <xs:attribute name="font-size" type="xs:int"/>
+                <xs:attribute name="font-style" type="font-style"/>
+                <xs:attribute name="foreground" type="color"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int"/>
+                <xs:attribute name="justify" type="justify"/>
+                <xs:attribute name="padx" type="xs:int"/>
+                <xs:attribute name="pady" type="xs:int"/>
+                <xs:attribute name="relief" type="relief" default="flat"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="text" type="xs:string"/>
+                <xs:attribute name="text-binding" type="binding"/>
+                <xs:attribute name="width" type="xs:int"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="option-menu">
+        <!-- @TODO: Section 19 has no reference of widget options for option-menu -->
+    </xs:complexType>
+
+    <xs:complexType name="paned-window">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:sequence>
+                    <xs:element ref="PanedWindowChild" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension" default="2p"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="handlepad" type="dimension" default="8p"/>
+                <xs:attribute name="handlesize" type="dimension" default="8p"/>
+                <xs:attribute name="height" type="dimension"/>
+                <xs:attribute name="opaqueresize" type="xs:boolean" default="true"/>
+                <xs:attribute name="orient" type="orientation"/>
+                <xs:attribute name="relief" type="relief" default="flat"/>
+                <xs:attribute name="sashpad" type="dimension" default="0"/>
+                <xs:attribute name="sashrelief" type="relief" default="flat"/>
+                <xs:attribute name="sashwidth" type="dimension" default="2p"/>
+                <xs:attribute name="showhandle" type="xs:boolean" default="false"/>
+                <xs:attribute name="width" type="dimension"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="paned-window-child">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:group ref="widgets" minOccurs="0" maxOccurs="unbounded"/>
+
+                <xs:attribute name="after" type="xs:string"/>
+                <xs:attribute name="before" type="xs:string"/>
+                <xs:attribute name="height" type="dimension"/>
+                <xs:attribute name="minsize" type="dimension"/>
+                <xs:attribute name="padx" type="dimension"/>
+                <xs:attribute name="pady" type="dimension"/>
+                <xs:attribute name="sticky" type="sticky"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
     <!-- /Complex Types -->
 
-
-    <!-- Simple Types -->
-    <xs:simpleType name="command">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="\{[A-Za-z_]+\}"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="cursor">
-        <xs:restriction base="xs:string">
-            <!-- @TODO: add options from Section 5.8 -->
-            <xs:enumeration value="arrow"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="binding">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="\{\{[A-Za-z\d_]+\}\}"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="grid-sticky">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="sw"/>
-            <xs:enumeration value="e"/>
-            <xs:enumeration value="ne"/>
-            <xs:enumeration value="new"/>
-            <xs:enumeration value="es"/>
-            <xs:enumeration value="esw"/>
-            <xs:enumeration value="w"/>
-            <xs:enumeration value="nw"/>
-            <xs:enumeration value="n"/>
-            <xs:enumeration value="nes"/>
-            <xs:enumeration value="ew"/>
-            <xs:enumeration value="s"/>
-            <xs:enumeration value="ns"/>
-            <xs:enumeration value="nsw"/>
-            <xs:enumeration value="nesw"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="relief">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="flat"/>
-            <xs:enumeration value="raised"/>
-            <xs:enumeration value="sunken"/>
-            <xs:enumeration value="groove"/>
-            <xs:enumeration value="ridge"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="anchor">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="nw"/>
-            <xs:enumeration value="n"/>
-            <xs:enumeration value="ne"/>
-            <xs:enumeration value="e"/>
-            <xs:enumeration value="se"/>
-            <xs:enumeration value="s"/>
-            <xs:enumeration value="sw"/>
-            <xs:enumeration value="w"/>
-            <xs:enumeration value="center"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="bitmap">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="error"/>
-            <xs:enumeration value="gray75"/>
-            <xs:enumeration value="gray50"/>
-            <xs:enumeration value="gray25"/>
-            <xs:enumeration value="gray12"/>
-            <xs:enumeration value="hourglass"/>
-            <xs:enumeration value="info"/>
-            <xs:enumeration value="questhead"/>
-            <xs:enumeration value="question"/>
-            <xs:enumeration value="warning"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="geometry">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="\d+x\d+[+\-]\d+[+\-]\d+"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="color">
-        <!-- @TODO: create SimpleType 'color' -->
-        <xs:restriction base="xs:string">
-            <xs:pattern value="#[\da-fA-F]{0,3}[\da-fA-F]{0,3}[\da-fA-F]{0,3}"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="state">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="normal"/>
-            <xs:enumeration value="disabled"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="font">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Times"/>
-            <xs:enumeration value="Helvetica"/>
-            <xs:enumeration value="Symbol"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="font-style">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="bold italic"/>
-            <xs:enumeration value="overstrike"/>
-            <xs:enumeration value="underline overstrike"/>
-            <xs:enumeration value="underline overstrike italic"/>
-            <xs:enumeration value="overstrike bold"/>
-            <xs:enumeration value="overstrike bold italic"/>
-            <xs:enumeration value="italic"/>
-            <xs:enumeration value="underline italic"/>
-            <xs:enumeration value="underline"/>
-            <xs:enumeration value="underline overstrike bold"/>
-            <xs:enumeration value="overstrike italic"/>
-            <xs:enumeration value="bold"/>
-            <xs:enumeration value="underline bold"/>
-            <xs:enumeration value="underline bold italic"/>
-            <xs:enumeration value="underline overstrike bold italic"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="justify">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-            <xs:enumeration value="center"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="compound">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="none"/>
-            <xs:enumeration value="top"/>
-            <xs:enumeration value="bottom"/>
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-            <xs:enumeration value="center"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="bool-int">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="image">
-        <xs:restriction base="xs:string">
-            <!-- @TODO: ImageType -->
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="dimension">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="\d+[imcp]?"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="show">
-        <xs:restriction base="xs:string">
-            <xs:length value="1"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="labelanchor">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="nw"/>
-            <xs:enumeration value="n"/>
-            <xs:enumeration value="ne"/>
-            <xs:enumeration value="en"/>
-            <xs:enumeration value="e"/>
-            <xs:enumeration value="es"/>
-            <xs:enumeration value="se"/>
-            <xs:enumeration value="s"/>
-            <xs:enumeration value="sw"/>
-            <xs:enumeration value="ws"/>
-            <xs:enumeration value="w"/>
-            <xs:enumeration value="wn"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="activestyle">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="underline"/>
-            <xs:enumeration value="dotbox"/>
-            <xs:enumeration value="none"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="selectmode">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="browse"/>
-            <xs:enumeration value="single"/>
-            <xs:enumeration value="multiple"/>
-            <xs:enumeration value="extended"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="direction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-            <xs:enumeration value="above"/>
-        </xs:restriction>
-    </xs:simpleType>
 </xs:schema>
 

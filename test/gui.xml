@@ -3,12 +3,17 @@
 <Window xmlns="https://jonaskloster.dk/xml/tkmvvm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://jonaskloster.dk/xml/tkmvvm.xsd"
-        geometry="600x400+200+200" height="600" width="400">
+        geometry="600x400+200+200" height="600" width="400" title="tester">
     <LabelFrame text="Entry" text-binding="{{frame_label}}">
         <Frame>
             <LabelFrame>
                 <Entry text-binding="{{entry_data}}"/>
             </LabelFrame>
+        </Frame>
+        <Frame>
+            <Frame>
+
+            </Frame>
         </Frame>
     </LabelFrame>
     <Frame>
