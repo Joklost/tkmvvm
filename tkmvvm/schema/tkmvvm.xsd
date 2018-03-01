@@ -4,7 +4,7 @@
            xmlns="https://jonaskloster.dk/xml/tkmvvm"
            elementFormDefault="qualified">
 
-    <xs:include schemaLocation="https://jonaskloster.dk/xml/include/simpletypes.xsd"/>
+    <xs:include schemaLocation="https://raw.githubusercontent.com/Joklost/tkmvvm/master/tkmvvm/schema/include/simpletypes.xsd"/>
     <!-- Reference Manual: http://infohost.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf -->
 
     <!-- Root Element -->
