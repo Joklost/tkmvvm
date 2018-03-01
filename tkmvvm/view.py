@@ -3,31 +3,39 @@ import tkinter
 import tkinter.ttk
 import viewmodel
 import mvvm
+from lxml import etree
 
 
 class View(abc.ABC):
     context = None
 
-    def __init__(self, parent: tkinter.Tk, context: viewmodel.ViewModel):
+    def __init__(self, parent: tkinter.Tk, context: viewmodel.ViewModel, height: int, width: int):
         self.parent = parent
         self.context = context
+        self.style = tkinter.ttk.Style()
+        self.height = height
+        self.width = width
         view = mvvm.ViewCollection()
         view.add(self)
         self.properties = {}
 
-    @staticmethod
-    def center_window(window, window_width: int, window_height: int):
+    def load_xml(self, file_):
+        root = etree.parse(file_)
+
+        print(etree.tostring(root))
+
+    def center_window(self, window):
         """
         Center window in the screen with size window_width x window_height
         """
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
 
-        x = (screen_width - window_width) // 2
-        y = (screen_height - window_height) // 2
+        x = (screen_width - self.width) // 2
+        y = (screen_height - self.height) // 2
 
         window.geometry('{window_width}x{window_height}+{x}+{y}'.format(
-            window_width=window_width, window_height=window_height, x=x, y=y
+            window_width=self.width, window_height=self.height, x=x, y=y
         ))
 
     def property_changed(self, property_name: str):
@@ -143,3 +151,9 @@ class View(abc.ABC):
         if property_name not in self.properties:
             self.properties[property_name] = []
         self.properties[property_name].append(widget)
+
+    def mainloop(self):
+        self.parent.mainloop()
+
+    def resizeable(self, width: bool, height: bool):
+        self.parent.resizable(width, height)

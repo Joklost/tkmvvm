@@ -12,7 +12,7 @@ def main():
     root = tkinter.Tk()
     root.withdraw()
 
-    view = views.test.TestView(root, vm)
+    view = views.test.TestView(root, vm, 600, 400)
     view.resizeable(False, False)
     view.mainloop()
 

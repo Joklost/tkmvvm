@@ -6,8 +6,8 @@ STICKY = tkinter.E + tkinter.N + tkinter.S + tkinter.W
 
 
 class TestView(tkmvvm.view.View):
-    def __init__(self, parent: tkinter.Tk, context: tkmvvm.viewmodel.ViewModel):
-        super().__init__(parent, context)
+    def __init__(self, parent: tkinter.Tk, context: tkmvvm.viewmodel.ViewModel, height: int, width: int):
+        super().__init__(parent, context, height, width)
 
         # ('clam', 'alt', 'default', 'classic')
         self.style = tkinter.ttk.Style()
