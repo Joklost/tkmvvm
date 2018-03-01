@@ -12,7 +12,7 @@ def main():
     view = CalculatorView(root, view_model, 600, 400)
     view.load_xml('view.xml')
     view.resizeable(False, False)
-    view.mainloop()
+    # view.mainloop()
 
 
 if __name__ == '__main__':

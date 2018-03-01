@@ -1,8 +1,35 @@
+<?xml version="1.0"?>
 <Window xmlns="https://jonaskloster.dk/xml/tkmvvm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://jonaskloster.dk/xml/tkmvvm.xsd"
         height="600" width="400" title="Calculator">
     <Frame>
+        <Entry grid-sticky="nesw" grid-row="1" grid-column="0" grid-columnspan="4" state="disabled" text-binding="{{computation}}"/>
+        <Entry grid-sticky="nesw" grid-row="0" grid-column="0" grid-columnspan="4" text-binding="{{entry}}"/>
 
+        <Button grid-sticky="nesw" grid-row="1" grid-column="0" command="{clear_entry}" text="CE"/>
+        <Button grid-sticky="nesw" grid-row="1" grid-column="1" command="{clear}" text="C"/>
+        <Button grid-sticky="nesw" grid-row="1" grid-column="2" command="{remove_char}" text="--"/>
+        <Button grid-sticky="nesw" grid-row="1" grid-column="3" command="{divide}" text="/"/>
+
+        <Button grid-sticky="nesw" grid-row="2" grid-column="0" command="{seven}" text="7"/>
+        <Button grid-sticky="nesw" grid-row="2" grid-column="1" command="{eight}" text="8"/>
+        <Button grid-sticky="nesw" grid-row="2" grid-column="2" command="{nine}" text="9"/>
+        <Button grid-sticky="nesw" grid-row="2" grid-column="3" command="{multiply}" text="*"/>
+
+        <Button grid-sticky="nesw" grid-row="3" grid-column="0" command="{four}" text="4"/>
+        <Button grid-sticky="nesw" grid-row="3" grid-column="1" command="{five}" text="5"/>
+        <Button grid-sticky="nesw" grid-row="3" grid-column="2" command="{six}" text="6"/>
+        <Button grid-sticky="nesw" grid-row="3" grid-column="3" command="{subtract}" text="-"/>
+
+        <Button grid-sticky="nesw" grid-row="4" grid-column="0" command="{one}" text="1"/>
+        <Button grid-sticky="nesw" grid-row="4" grid-column="1" command="{two}" text="2"/>
+        <Button grid-sticky="nesw" grid-row="4" grid-column="2" command="{three}" text="3"/>
+        <Button grid-sticky="nesw" grid-row="4" grid-column="3" command="{plus}" text="+"/>
+
+        <Button grid-sticky="nesw" grid-row="5" grid-column="0" text=""/>
+        <Button grid-sticky="nesw" grid-row="5" grid-column="1" command="{zero}" text="0"/>
+        <Button grid-sticky="nesw" grid-row="5" grid-column="2" command="{comma}" text=","/>
+        <Button grid-sticky="nesw" grid-row="5" grid-column="3" command="{equal}" text="="/>
     </Frame>
 </Window>

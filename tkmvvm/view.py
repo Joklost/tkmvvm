@@ -3,7 +3,12 @@ import tkinter
 import tkinter.ttk
 import viewmodel
 import mvvm
+import io
+import requests
 from lxml import etree
+
+
+SCHEMA_LOCATION = 'https://raw.githubusercontent.com/Joklost/tkmvvm/master/tkmvvm/schema/tkmvvm.xsd'
 
 
 class View(abc.ABC):
@@ -18,11 +23,6 @@ class View(abc.ABC):
         view = mvvm.ViewCollection()
         view.add(self)
         self.properties = {}
-
-    def load_xml(self, file_):
-        root = etree.parse(file_)
-
-        print(etree.tostring(root))
 
     def center_window(self, window):
         """
@@ -157,3 +157,14 @@ class View(abc.ABC):
 
     def resizeable(self, width: bool, height: bool):
         self.parent.resizable(width, height)
+
+    def load_xml(self, file_):
+        validator_schema = requests.get(SCHEMA_LOCATION)
+
+        validator = etree.XMLSchema(etree.parse(SCHEMA_LOCATION))
+        root = etree.parse(file_)
+        validator.validate(root)
+        context = etree.iterwalk(root)
+
+        for act, ele in context:
+            print(act, ele.tag)
