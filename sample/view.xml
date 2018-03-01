@@ -1,0 +1,8 @@
+<Window xmlns="https://jonaskloster.dk/xml/tkmvvm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://jonaskloster.dk/xml/tkmvvm.xsd"
+        height="600" width="400" title="Calculator">
+    <Frame>
+
+    </Frame>
+</Window>
