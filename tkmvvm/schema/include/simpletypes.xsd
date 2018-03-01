@@ -23,7 +23,6 @@
             <xs:pattern value="\{\{[A-Za-z\d_]+\}\}"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="sticky">
         <xs:restriction base="xs:string">
             <xs:enumeration value="sw"/>
@@ -224,4 +223,11 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="wrap">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="char"/>
+            <xs:enumeration value="word"/>
+            <xs:enumeration value="none"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

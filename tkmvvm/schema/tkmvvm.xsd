@@ -10,14 +10,12 @@
     <!-- Root Element -->
     <xs:element name="Window">
         <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:choice>
+            <xs:group ref="widgets" minOccurs="0" maxOccurs="unbounded"/>
             <!--<xs:attribute name="geometry" type="geometry"/>-->
             <xs:attribute name="width" type="xs:int"/>
             <xs:attribute name="height" type="xs:int"/>
             <xs:attribute name="title" type="xs:string"/>
+            <xs:attribute name="theme" type="xs:string"/>
         </xs:complexType>
     </xs:element>
     <!-- /Root Element -->
@@ -35,22 +33,36 @@
     <xs:element name="Menubutton" type="menubutton"/>
     <xs:element name="Separator"/>
     <xs:element name="Cascade"/>
-    <xs:element name="Radiobutton"/>
+    <xs:element name="Radiobutton" type="radiobutton"/>
     <xs:element name="Message" type="message"/>
     <xs:element name="PanedWindow" type="paned-window"/>
     <xs:element name="PanedWindowChild" type="paned-window-child"/>
+    <xs:element name="Scale" type="scale"/>
+    <xs:element name="Scrollbar" type="scrollbar"/>
+    <xs:element name="Spinbox" type="spinbox"/>
+    <xs:element name="Text" type="text"/>
 
     <xs:group name="widgets">
         <xs:choice>
             <!-- ref elements -->
+            <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="Button" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="Checkbutton" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="Entry" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="Label" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="Listbox" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="Frame" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="LabelFrame" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="Menu" minOccurs="0" maxOccurs="unbounded"/>
+            <!--<xs:element ref="Command" minOccurs="0" maxOccurs="unbounded"/>-->
+            <xs:element ref="Menubutton" minOccurs="0" maxOccurs="unbounded"/>
+            <!--<xs:element ref="Separator" minOccurs="0" maxOccurs="unbounded"/>-->
+            <!--<xs:element ref="Cascade" minOccurs="0" maxOccurs="unbounded"/>-->
+            <xs:element ref="Radiobutton" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Message" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="PanedWindow" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Scale" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Scrollbar" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Spinbox" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Text" minOccurs="0" maxOccurs="unbounded"/>
         </xs:choice>
     </xs:group>
     <!-- /Elements -->
@@ -108,7 +120,7 @@
                 <xs:attribute name="repeatdelay" type="xs:int"/>
                 <xs:attribute name="repeatinterval" type="xs:int"/>
                 <xs:attribute name="state" type="state"/>
-                <xs:attribute name="takefocus" type="xs:int"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
                 <xs:attribute name="text" type="xs:string"/>
                 <xs:attribute name="text-binding" type="binding"/>
                 <xs:attribute name="underline" type="xs:int" default="-1"/>
@@ -151,7 +163,7 @@
                 <xs:attribute name="selectcolor" type="color" default="#FF0000"/>
                 <xs:attribute name="selectimage" type="image"/>
                 <xs:attribute name="state" type="state"/>
-                <xs:attribute name="takefocus" type="xs:int"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
                 <xs:attribute name="text" type="xs:string"/>
                 <xs:attribute name="text-binding" type="binding"/>
                 <xs:attribute name="underline" type="xs:int" default="-1"/>
@@ -190,7 +202,7 @@
                 <xs:attribute name="selectborderwidth" type="dimension" default="1p"/>
                 <xs:attribute name="show" type="show"/>
                 <xs:attribute name="state" type="state"/>
-                <xs:attribute name="takefocus" type="xs:int"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
                 <xs:attribute name="text-binding" type="binding"/>
                 <!-- @TODO: validate, and validatecommand-->
                 <xs:attribute name="width" type="xs:int" default="20"/>
@@ -336,6 +348,8 @@
     <xs:complexType name="menubutton">
         <xs:complexContent>
             <xs:extension base="widget">
+                <xs:attribute name="menu" type="xs:string"/>
+
                 <xs:attribute name="activebackground" type="color"/>
                 <xs:attribute name="activeforeground" type="color"/>
                 <xs:attribute name="anchor" type="anchor"/>
@@ -438,6 +452,206 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+    <xs:complexType name="radiobutton">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="activebackground" type="color"/>
+                <xs:attribute name="activeforeground" type="color"/>
+                <xs:attribute name="anchor" type="anchor"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="bitmap" type="bitmap"/>
+                <xs:attribute name="borderwidth" type="dimension" default="2p"/>
+                <xs:attribute name="command" type="command"/>
+                <xs:attribute name="compound" type="compound" default="none"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="disabledforeground" type="color"/>
+                <xs:attribute name="font" type="font"/>
+                <xs:attribute name="font-size" type="xs:int"/>
+                <xs:attribute name="font-style" type="font-style"/>
+                <xs:attribute name="height" type="xs:int" default="1"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int" default="1"/>
+                <xs:attribute name="image" type="image"/>
+                <xs:attribute name="indicatoron" type="bool-int"/>
+                <xs:attribute name="justify" type="justify" default="center"/>
+                <xs:attribute name="offrelief" type="relief" default="raised"/>
+                <xs:attribute name="overrelief" type="relief"/>
+                <xs:attribute name="padx" type="xs:int"/>
+                <xs:attribute name="pady" type="xs:int"/>
+                <xs:attribute name="relief" type="relief"/>
+                <xs:attribute name="selectcolor" type="color"/>
+                <xs:attribute name="selectimage" type="image"/>
+                <xs:attribute name="state" type="state" default="normal"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="text" type="xs:string"/>
+                <xs:attribute name="text-binding" type="binding"/>
+                <xs:attribute name="underline" type="xs:int" default="-1"/>
+                <xs:attribute name="value-binding" type="binding"/>
+                <xs:attribute name="control-binding" type="binding"/>
+                <xs:attribute name="width" type="xs:int"/>
+                <xs:attribute name="wraplength" type="xs:int"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="scale">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="activebackground" type="color"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension" default="2p"/>
+                <xs:attribute name="command" type="command"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="digits-binding" type="binding"/>
+                <xs:attribute name="font" type="font"/>
+                <xs:attribute name="font-size" type="xs:int"/>
+                <xs:attribute name="font-style" type="font-style"/>
+                <xs:attribute name="foreground" type="color"/>
+                <xs:attribute name="from_" type="xs:float" default="0.0"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int" default="1"/>
+                <xs:attribute name="label" type="xs:string"/>
+                <xs:attribute name="label-binding" type="binding"/>
+                <xs:attribute name="length" type="dimension" default="100p"/>
+                <xs:attribute name="orient" type="orientation" default="vertical"/>
+                <xs:attribute name="relief" type="relief" default="flat"/>
+                <xs:attribute name="repeatdelay" type="xs:int" default="300"/>
+                <xs:attribute name="repeatinterval" type="xs:int"/>
+                <xs:attribute name="resolution" type="xs:float"/>
+                <xs:attribute name="showvalue" type="bool-int"/>
+                <xs:attribute name="sliderlength" type="dimension" default="30p"/>
+                <xs:attribute name="sliderrelief" type="relief" default="raised"/>
+                <xs:attribute name="state" type="state"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="tickinterval" type="xs:float" default="0"/>
+                <xs:attribute name="to" type="xs:float" default="100"/>
+                <xs:attribute name="throughcolor" type="color"/>
+                <xs:attribute name="variable-binding" type="binding"/>
+                <xs:attribute name="width" type="dimension" default="15p"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="scrollbar">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="activebackground" type="color"/>
+                <xs:attribute name="activerelief" type="relief" default="raised"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension"/>
+                <xs:attribute name="command" type="command"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="elementborderwidth" type="xs:int" default="-1"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int" default="1"/>
+                <xs:attribute name="jump" type="bool-int"/>
+                <xs:attribute name="orient" type="orientation" default="vertical"/>
+                <xs:attribute name="relief" type="relief" default="sunken"/>
+                <xs:attribute name="repeatdelay" type="xs:int" default="300"/>
+                <xs:attribute name="repeatinterval" type="xs:int" default="100"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="troughcolor" type="color"/>
+                <xs:attribute name="width" type="dimension" default="16"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="spinbox">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="activebackground" type="color"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension"/>
+                <xs:attribute name="buttonbackground" type="color"/>
+                <xs:attribute name="buttoncursor" type="cursor"/>
+                <xs:attribute name="buttondownrelief" type="relief" default="raised"/>
+                <xs:attribute name="buttonup" type="relief" default="raised"/>
+                <xs:attribute name="command" type="command"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="disabledbackground" type="color"/>
+                <xs:attribute name="disabledforeground" type="color"/>
+                <xs:attribute name="exportselection" type="xs:boolean"/>
+                <xs:attribute name="font" type="font"/>
+                <xs:attribute name="font-size" type="xs:int"/>
+                <xs:attribute name="font-style" type="font-style"/>
+                <xs:attribute name="foreground" type="color"/>
+                <xs:attribute name="format" type="xs:string"/> <!-- @TODO: formatting string, e.g., %10.4f -->
+                <xs:attribute name="from_" type="xs:float"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int" default="1"/>
+                <xs:attribute name="increment" type="xs:float"/>
+                <xs:attribute name="insertbackground" type="color"/>
+                <xs:attribute name="insertborderwidth" type="xs:int"/>
+                <xs:attribute name="insertofftime" type="xs:int"/>
+                <xs:attribute name="insertontime" type="xs:int"/>
+                <xs:attribute name="insertwidth" type="dimension" default="2p"/>
+                <xs:attribute name="justify" type="justify"/>
+                <xs:attribute name="readonlybackground" type="color"/>
+                <xs:attribute name="relief" type="relief" default="sunken"/>
+                <xs:attribute name="repeatdelay" type="xs:int" default="400"/>
+                <xs:attribute name="repeatinterval" type="xs:int" default="100"/>
+                <xs:attribute name="selectbackground" type="color"/>
+                <xs:attribute name="selectborderwidth" type="xs:int"/>
+                <xs:attribute name="selectforeground" type="color"/>
+                <xs:attribute name="state" type="state" default="normal"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="text-binding" type="binding"/>
+                <xs:attribute name="to" type="xs:float"/>
+                <xs:attribute name="values-binding" type="binding"/>
+                <xs:attribute name="width" type="xs:int" default="20"/>
+                <xs:attribute name="wrap" type="xs:boolean"/>
+                <!-- @TODO: xscrollcommand -->
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="text">
+        <xs:complexContent>
+            <xs:extension base="widget">
+                <xs:attribute name="autoseparators" type="xs:boolean"/>
+                <xs:attribute name="background" type="color"/>
+                <xs:attribute name="borderwidth" type="dimension" default="2p"/>
+                <xs:attribute name="cursor" type="cursor"/>
+                <xs:attribute name="exportselection" type="xs:boolean"/>
+                <xs:attribute name="font" type="font"/>
+                <xs:attribute name="font-size" type="xs:int"/>
+                <xs:attribute name="font-style" type="font-style"/>
+                <xs:attribute name="foreground" type="color"/>
+                <xs:attribute name="height" type="xs:int"/>
+                <xs:attribute name="highlightbackground" type="color"/>
+                <xs:attribute name="highlightcolor" type="color"/>
+                <xs:attribute name="highlightthickness" type="xs:int" default="1"/>
+                <xs:attribute name="insertbackground" type="color"/>
+                <xs:attribute name="insertofftime" type="xs:int" default="300"/>
+                <xs:attribute name="insertontime" type="xs:int" default="600"/>
+                <xs:attribute name="insertwidth" type="xs:int" default="2"/>
+                <xs:attribute name="maxundo" type="xs:int"/>
+                <xs:attribute name="padx" type="dimension" default="1p"/>
+                <xs:attribute name="pady" type="dimension" default="1p"/>
+                <xs:attribute name="relief" type="relief" default="sunken"/>
+                <xs:attribute name="selectbackground" type="color"/>
+                <xs:attribute name="selectborderwidth" type="xs:int"/>
+                <xs:attribute name="selectforeground" type="color"/>
+                <xs:attribute name="spacing1" type="xs:int" default="0"/>
+                <xs:attribute name="spacing2" type="xs:int" default="0"/>
+                <xs:attribute name="spacing3" type="xs:int" default="0"/>
+                <xs:attribute name="state" type="state"/>
+                <xs:attribute name="tabs" type="dimension"/>
+                <xs:attribute name="takefocus" type="bool-int"/>
+                <xs:attribute name="undo" type="xs:boolean"/>
+                <xs:attribute name="width" type="xs:int"/>
+                <xs:attribute name="wrap" type="wrap" default="char"/>
+                <!-- @TODO: xscrollcommand -->
+                <!-- @TODO: yscrollcommand -->
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <!-- /Complex Types -->
 
 </xs:schema>
