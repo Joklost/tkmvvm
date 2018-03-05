@@ -190,6 +190,11 @@ class View(abc.ABC):
         for act, ele in context:
             element_name = ele.tag.split('}')[1]
             if 'Window' in element_name:
+                if act == START:
+                    self.height = int(ele.attrib['height'])
+                    self.width = int(ele.attrib['width'])
+                    self.window.title(ele.attrib['title'])
+                    self.center_window(self.window)
                 continue
 
             if act == START:

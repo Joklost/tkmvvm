@@ -12,9 +12,9 @@
         <xs:complexType>
             <xs:group ref="widgets" minOccurs="0" maxOccurs="unbounded"/>
             <!--<xs:attribute name="geometry" type="geometry"/>-->
-            <xs:attribute name="width" type="xs:int"/>
-            <xs:attribute name="height" type="xs:int"/>
-            <xs:attribute name="title" type="xs:string"/>
+            <xs:attribute name="width" type="xs:int" use="required"/>
+            <xs:attribute name="height" type="xs:int" use="required"/>
+            <xs:attribute name="title" type="xs:string" use="required"/>
             <xs:attribute name="theme" type="xs:string"/>
         </xs:complexType>
     </xs:element>
