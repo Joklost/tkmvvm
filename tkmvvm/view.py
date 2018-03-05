@@ -7,16 +7,33 @@ import io
 import requests
 from lxml import etree
 
-
 SCHEMA_LOCATION = 'https://raw.githubusercontent.com/Joklost/tkmvvm/master/tkmvvm/schema/tkmvvm.xsd'
+START = 'start'
+END = 'end'
+
+WIDGET_LOOKUP = {
+    'Window': None,
+    'Frame': tkinter.Frame,
+    'LabelFrame': tkinter.LabelFrame,
+    'Entry': tkinter.Entry,
+    'Button': tkinter.Button
+}
+
+CONTAINER_WIDGETS = (
+    'Window',
+    'Frame',
+    'LabelFrame'
+)
 
 
 class View(abc.ABC):
     context = None
+    widgets = []
 
     def __init__(self, parent: tkinter.Tk, context: viewmodel.ViewModel, height: int, width: int):
         self.parent = parent
         self.context = context
+        self.window = tkinter.Toplevel(self.parent)
         self.style = tkinter.ttk.Style()
         self.height = height
         self.width = width
@@ -51,8 +68,13 @@ class View(abc.ABC):
 
             if isinstance(widget, tkinter.Entry) or isinstance(widget, tkinter.ttk.Entry):
                 # insert the new value in the entry
+                state = widget.cget('state')
+                widget.config(state=tkinter.NORMAL)
+
                 widget.delete(0, tkinter.END)
                 widget.insert(0, getattr(self.context, property_name))
+
+                widget.config(state=state)
 
             elif isinstance(widget, tkinter.Checkbutton):
                 # check/uncheck the check button then run it's requisite function
@@ -159,12 +181,43 @@ class View(abc.ABC):
         self.parent.resizable(width, height)
 
     def load_xml(self, file_):
-        validator_schema = requests.get(SCHEMA_LOCATION)
+        schema = etree.XMLSchema(etree.parse(io.StringIO(requests.get(SCHEMA_LOCATION).text)))
+        parser = etree.XMLParser(schema=schema, remove_comments=True)
+        root = etree.parse(file_, parser=parser)
+        context = etree.iterwalk(root, events=(START, END))
 
-        validator = etree.XMLSchema(etree.parse(SCHEMA_LOCATION))
-        root = etree.parse(file_)
-        validator.validate(root)
-        context = etree.iterwalk(root)
-
+        container_stack = [{'name': 'Window', 'widget': self.window}]
         for act, ele in context:
-            print(act, ele.tag)
+            element_name = ele.tag.split('}')[1]
+            if 'Window' in element_name:
+                continue
+
+            if act == START:
+                options = {}
+                grid_options = {}
+                bindings = []
+                for k, v in ele.attrib.items():
+                    if 'grid-' in k:
+                        grid_options[k.replace('grid-', '')] = v
+                    elif '-binding' in k:
+                        binding = v.replace('{', '').replace('}', '')
+                        bindings.append(binding)
+                    elif 'command' in k:
+                        command = v.replace('{', '').replace('}', '')
+                        options['command'] = getattr(self.context, command)
+                    else:
+                        options[k] = v
+
+                w = WIDGET_LOOKUP[element_name](master=container_stack[-1]['widget'], **options)
+                if element_name in CONTAINER_WIDGETS:
+                    container_stack.append({'name': element_name, 'widget': w})
+                self.widgets.append(w)
+                for binding in bindings:
+                    self.bind_data(w, binding)
+
+                w.grid(**grid_options)
+            elif act == END:
+                if element_name in CONTAINER_WIDGETS and element_name == container_stack[-1]['name']:
+                    container_stack.pop()
+
+            last_act, last_ele = act, ele
