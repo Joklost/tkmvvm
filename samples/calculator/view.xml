@@ -1,16 +1,28 @@
 <?xml version="1.0"?>
 <Window xmlns="https://jonaskloster.dk/xml/tkmvvm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://jonaskloster.dk/xml/tkmvvm.xsd"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Joklost/tkmvvm/master/tkmvvm/schema/tkmvvm.xsd"
         height="600" width="400" title="Calculator">
     <Frame>
-        <Entry grid-sticky="nesw" grid-row="1" grid-column="0" grid-columnspan="4" state="disabled" text-binding="{{computation}}"/>
-        <Entry grid-sticky="nesw" grid-row="0" grid-column="0" grid-columnspan="4" text-binding="{{entry}}"/>
+        <LabelFrame text="Computation" grid-row="0" grid-column="0" grid-columnspan="4">
+            <Entry grid-sticky="nesw"
+                   grid-row="0"
+                   grid-column="0"
+                   grid-columnspan="4"
+                   state="readonly" text-binding="{{computation}}" justify="right"/>
 
-        <Button grid-sticky="nesw" grid-row="1" grid-column="0" command="{clear_entry}" text="CE"/>
-        <Button grid-sticky="nesw" grid-row="1" grid-column="1" command="{clear}" text="C"/>
-        <Button grid-sticky="nesw" grid-row="1" grid-column="2" command="{remove_char}" text="--"/>
-        <Button grid-sticky="nesw" grid-row="1" grid-column="3" command="{divide}" text="/"/>
+            <!-- WARNING: DO NOT CHANGE STATE OF THIS ENTRY, AS THE VALUE IS EVALUATED AS PYTHON CODE! -->
+            <Entry grid-sticky="nesw"
+                   grid-row="1"
+                   grid-column="0"
+                   grid-columnspan="4"
+                   text-binding="{{entry}}" state="readonly" justify="right"/>
+        </LabelFrame>
+
+        <Button width="2" grid-sticky="nesw" grid-row="1" grid-column="0" command="{clear_entry}" text="CE"/>
+        <Button width="2" grid-sticky="nesw" grid-row="1" grid-column="1" command="{clear}" text="C"/>
+        <Button width="2" grid-sticky="nesw" grid-row="1" grid-column="2" command="{remove_char}" text="DEL"/>
+        <Button width="2" grid-sticky="nesw" grid-row="1" grid-column="3" command="{divide}" text="/"/>
 
         <Button grid-sticky="nesw" grid-row="2" grid-column="0" command="{seven}" text="7"/>
         <Button grid-sticky="nesw" grid-row="2" grid-column="1" command="{eight}" text="8"/>
@@ -27,9 +39,9 @@
         <Button grid-sticky="nesw" grid-row="4" grid-column="2" command="{three}" text="3"/>
         <Button grid-sticky="nesw" grid-row="4" grid-column="3" command="{plus}" text="+"/>
 
-        <Button grid-sticky="nesw" grid-row="5" grid-column="0" text=""/>
+        <Button grid-sticky="nesw" grid-row="5" grid-column="0" text="" state="disabled"/>
         <Button grid-sticky="nesw" grid-row="5" grid-column="1" command="{zero}" text="0"/>
-        <Button grid-sticky="nesw" grid-row="5" grid-column="2" command="{comma}" text=","/>
+        <Button grid-sticky="nesw" grid-row="5" grid-column="2" command="{dot}" text="."/>
         <Button grid-sticky="nesw" grid-row="5" grid-column="3" command="{equal}" text="="/>
     </Frame>
 </Window>

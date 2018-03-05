@@ -10,3 +10,17 @@ class CalculatorView(tkmvvm.view.View):
 
         # enable quitting when pressing the exit button
         self.window.protocol('WM_DELETE_WINDOW', self.window.quit)
+
+        self.reload_btn = tkinter.Button(
+            self.window,
+            text='Reload View',
+            command=self.reload_xml,
+            width=20
+        )
+        self.reload_btn.grid(row=0)
+
+    def reload_xml(self):
+        for widget in self.widgets:
+            widget.grid_forget()
+
+        self.load_xml('view.xml')

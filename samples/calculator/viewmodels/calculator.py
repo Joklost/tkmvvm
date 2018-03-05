@@ -1,6 +1,6 @@
 from context import tkmvvm
 from typing import Union
-
+import ast
 
 class CalculatorViewModel(tkmvvm.viewmodel.ViewModel):
     _entry = ""
@@ -15,7 +15,7 @@ class CalculatorViewModel(tkmvvm.viewmodel.ViewModel):
 
     @entry.setter
     def entry(self, value):
-        _entry = value
+        self._entry = value
         self.on_property_changed('entry')
 
     @property
@@ -24,62 +24,70 @@ class CalculatorViewModel(tkmvvm.viewmodel.ViewModel):
 
     @computation.setter
     def computation(self, value):
-        _computation = value
+        self._computation = value
         self.on_property_changed('computation')
 
     def clear_entry(self):
-        pass
+        self.entry = ""
 
     def clear(self):
-        pass
+        self.entry = ""
+        self.computation = ""
 
     def remove_char(self):
-        pass
+        self.entry = self.entry[:-1]
+        if self.entry[-1] == ' ':
+            self.entry = self.entry[:-1]
 
     def divide(self):
-        pass
+        self.entry += ' / '
 
     def seven(self):
-        pass
+        self.entry += '7'
 
     def eight(self):
-        pass
+        self.entry += '8'
 
     def nine(self):
-        pass
+        self.entry += '9'
 
     def multiply(self):
-        pass
+        self.entry += ' * '
 
     def four(self):
-        pass
+        self.entry += '4'
 
     def five(self):
-        pass
+        self.entry += '5'
 
     def six(self):
-        pass
+        self.entry += '6'
 
     def subtract(self):
-        pass
+        self.entry += ' - '
 
     def one(self):
-        pass
+        self.entry += '1'
 
     def two(self):
-        pass
+        self.entry += '2'
 
     def three(self):
-        pass
+        self.entry += '3'
 
     def plus(self):
-        pass
+        self.entry += ' + '
 
     def zero(self):
-        pass
+        self.entry += '0'
 
-    def comma(self):
-        pass
+    def dot(self):
+        self.entry += '.'
 
     def equal(self):
-        pass
+        # eval should be "safe" here, as long as the Entry widget bound to self.entry
+        # is 'readonly' or 'disabled'!
+        try:
+            self.computation = eval(self.entry)
+        except SyntaxError:
+            self.computation = 'Syntax error!'
