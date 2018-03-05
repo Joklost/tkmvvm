@@ -16,7 +16,7 @@ class TestView(tkmvvm.view.View):
         self.window = tkinter.Toplevel(self.parent)
         self.window.title('MVVM Demo')
         self.window.protocol('WM_DELETE_WINDOW', self.window.quit)
-        self.center_window(self.window, 605, 400)
+        self.center_window(self.window)
         self.border = tkinter.Frame(self.window, relief='flat', borderwidth=20)
 
         #######################################################
