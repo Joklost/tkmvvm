@@ -749,6 +749,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="normal"/>
             <xs:enumeration value="disabled"/>
+            <xs:enumeration value="readonly"/>
         </xs:restriction>
     </xs:simpleType>
 
