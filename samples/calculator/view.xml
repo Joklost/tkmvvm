@@ -2,8 +2,8 @@
 <Window xmlns="https://jonaskloster.dk/xml/tkmvvm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Joklost/tkmvvm/master/tkmvvm/schema/tkmvvm.xsd"
-        height="600" width="400" title="Calculator">
-    <Frame>
+        height="230" width="150" title="Calculator">
+    <Frame grid-sticky="nesw">
         <LabelFrame text="Computation" grid-row="0" grid-column="0" grid-columnspan="4">
             <Entry grid-sticky="nesw"
                    grid-row="0"

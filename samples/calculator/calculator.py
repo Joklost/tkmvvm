@@ -7,8 +7,8 @@ from views.calculator import CalculatorView
 def main():
     view_model = CalculatorViewModel(None)
     root = tkinter.Tk()
-    view = CalculatorView(root, view_model, 600, 400)
     root.withdraw()
+    view = CalculatorView(root, view_model, 600, 400, debug=False)
 
     view.load_xml('view.xml')
     view.resizeable(False, False)
