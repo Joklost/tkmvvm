@@ -11,5 +11,9 @@ setuptools.setup(
     packages=['tkmvvm'],
     url='https://github.com/Joklost/tkmvvm',
     python_requires='>=3',
-    zip_safe=False
+    zip_safe=False,
+    install_requires=[
+        'requests',
+        'lxml'
+    ]
 )
