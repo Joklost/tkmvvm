@@ -8,6 +8,8 @@ Supports generating interfaces from XML files.
 Sample
 ^^^^^^
 
+You can find the complete Calculator sample in the samples folder.
+
 **The View in XML**
 
 .. code:: xml
@@ -31,7 +33,12 @@ Sample
                 grid-column="1"
                 command="{clear}" 
                 text="C"/>
+        
+        ...                
+           
     </Window>
+    
+    
 
 Binding and command attributes attempt to match to a method from the ViewModel. 
 
@@ -114,8 +121,7 @@ The Model is used when you have some data that you want to store, and the Model 
 
     if __name__ == '__main__':
         main()
-        
-You can find the complete Calculator sample in the samples folder.
+     
 
 Currently Supported Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
